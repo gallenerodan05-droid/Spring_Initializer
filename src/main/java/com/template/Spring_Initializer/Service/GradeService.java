@@ -1,6 +1,7 @@
 package com.template.Spring_Initializer.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -17,22 +18,25 @@ public class GradeService {
         this.gradeRepo = gradeRepo1;
     }
 
-    public Grade addGrade(Grade grade ){
-        return gradeRepo.save(grade);
-    }
-
     public List<Grade> findAll() {
         return gradeRepo.findAll();
     }
-// TODO I shall consider this an alternative for orElseThrow
+
+    public Grade  addGrade( Grade entity) {
+        return gradeRepo.save(entity);
+    }
+
+    public Grade findById(Long aLong) {
+        return gradeRepo.findById(aLong).orElseThrow(()-> new RuntimeException("No grade found") );
+    }
+
+    // TODO I shall consider this an alternative for orElseThrow
     // public Optional<Grade> findById(Long id) {
     //     return gradeRepo.findById(id);
     // }
 
 
-    public Grade findById(Long id) {
-        return gradeRepo.findById(id).orElseThrow(()-> new RuntimeException("No grade found") );
-    }
+
 
     public void deleteById(Long id) {
         gradeRepo.deleteById(id);
