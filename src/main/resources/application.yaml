@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: Spring_Initializer
+
+  datasource:
+    url:  jdbc:postgresql://localhost:5432/class_record
+    
+    username: "postgres"
+    password: "Avengers"
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+  
+
+
+  

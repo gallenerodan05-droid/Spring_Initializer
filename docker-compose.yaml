@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: "Avengers"
+      POSTGRES_DB: "class_record"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+volumes: 
+  postgres_data:
+
