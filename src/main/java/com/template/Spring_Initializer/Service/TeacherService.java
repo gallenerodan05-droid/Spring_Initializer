@@ -1,11 +1,11 @@
 package com.template.Spring_Initializer.Service;
 
-import com.template.Spring_Initializer.Model.Teacher;
-import com.template.Spring_Initializer.Repository.TeacherRepo;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.template.Spring_Initializer.Model.Teacher;
+import com.template.Spring_Initializer.Repository.TeacherRepo;
 
 @Service
 public class TeacherService {

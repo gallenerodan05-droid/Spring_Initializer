@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.template.Spring_Initializer.DTO.GradeRequest;
 import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Service.GradeService;
 
-@RestController 
-@RequestMapping ("/api/grades")
+@RestController
+@RequestMapping("/api/grades")
 public class GradeController {
-    
+
     private final GradeService gradeService;
 
     public GradeController(GradeService gradeService) {
@@ -24,32 +25,27 @@ public class GradeController {
     }
 
     @PostMapping
-    public Grade addGrade(@RequestBody Grade grade) {
-        return gradeService.addGrade(grade);
+    public Grade addGrade(@RequestBody GradeRequest request) {
+        return gradeService.addGrade(request);
     }
 
-    @GetMapping 
+    @GetMapping
     public List<Grade> findAll() {
         return gradeService.findAll();
     }
 
-    @GetMapping ("/{id}  ")
-    public Grade findById(@PathVariable  Long id) {
+    @GetMapping("/{id}")
+    public Grade findById(@PathVariable Long id) {
         return gradeService.findById(id);
     }
 
-    @DeleteMapping ("/{id} ")
-    public void deleteById(@PathVariable  Long id) {
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Long id) {
         gradeService.deleteById(id);
     }
 
-    @DeleteMapping 
+    @DeleteMapping
     public void deleteAll() {
         gradeService.deleteAll();
     }
-
-
-
-
-
-} 
+}

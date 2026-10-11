@@ -22,6 +22,8 @@ public class Subject {
     public Subject(){
 
     }
+    public  Subject(String name){
+        this.name = name;}
 
     public Long getId() {
         return id;
@@ -39,7 +41,6 @@ public class Subject {
         this.name = name;
     }
 
-    public  Subject(String name){
-        this.name = name;}
+
 
 }
