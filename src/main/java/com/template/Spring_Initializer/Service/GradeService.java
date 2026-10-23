@@ -22,6 +22,7 @@ public class GradeService {
     private final SubjectRepo subjectRepo;
     private final TeacherRepo teacherRepo;
 
+    
     public GradeService(
             GradeRepo gradeRepo,
             StudentRepo studentRepo,
@@ -35,18 +36,18 @@ public class GradeService {
     }
 
     public Grade addGrade(GradeRequest request) {
-        Student student = studentRepo.findById(request.getStudentId())
+        Student student = studentRepo.findById(request.studentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        Subject subject = subjectRepo.findById(request.getSubjectId())
+        Subject subject = subjectRepo.findById(request.subjectId())
                 .orElseThrow(() -> new RuntimeException("Subject not found"));
 
-        Teacher teacher = teacherRepo.findById(request.getTeacherId())
+        Teacher teacher = teacherRepo.findById(request.teacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
 
         Grade grade = new Grade();
-        grade.setScore(request.getScore());
-        grade.setGradeDate(request.getGradeDate());
+        grade.setScore(request.score());
+        grade.setGradeDate(request.gradeDate());
 
         grade.setStudent(student);
         grade.setSubject(subject);

@@ -14,9 +14,13 @@ import com.template.Spring_Initializer.DTO.GradeRequest;
 import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Service.GradeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/grades")
 public class GradeController {
+
+
 
     private final GradeService gradeService;
 
@@ -25,7 +29,7 @@ public class GradeController {
     }
 
     @PostMapping
-    public Grade addGrade(@RequestBody GradeRequest request) {
+    public Grade addGrade(@Valid  @RequestBody GradeRequest request) {
         return gradeService.addGrade(request);
     }
 
