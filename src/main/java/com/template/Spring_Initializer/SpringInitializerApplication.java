@@ -8,6 +8,4 @@ public class SpringInitializerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringInitializerApplication.class, args);
-	}
-
-}
+	}}

@@ -2,6 +2,7 @@ package com.template.Spring_Initializer.Model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,10 @@ public class Student {
     private Long id;
 
 
+    @Column(nullable= false)
     private String firstname;
+
+    @Column(nullable= false)
     private String lastname;
 
     @OneToMany(mappedBy = "student")

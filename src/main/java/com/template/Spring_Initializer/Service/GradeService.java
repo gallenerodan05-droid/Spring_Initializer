@@ -35,6 +35,7 @@ public class GradeService {
         this.teacherRepo = teacherRepo;
     }
 
+
     public Grade addGrade(GradeRequest request) {
         Student student = studentRepo.findById(request.studentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
@@ -45,6 +46,7 @@ public class GradeService {
         Teacher teacher = teacherRepo.findById(request.teacherId())
                 .orElseThrow(() -> new RuntimeException("Teacher not found"));
 
+                
         Grade grade = new Grade();
         grade.setScore(request.score());
         grade.setGradeDate(request.gradeDate());
