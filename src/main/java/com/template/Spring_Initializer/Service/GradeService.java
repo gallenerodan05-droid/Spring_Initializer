@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.template.Spring_Initializer.DTO.GradeRequest;
+import com.template.Spring_Initializer.DTO.GradeResponse;
 import com.template.Spring_Initializer.Model.Grade;
-import com.template.Spring_Initializer.Model.Student;
-import com.template.Spring_Initializer.Model.Subject;
-import com.template.Spring_Initializer.Model.Teacher;
 import com.template.Spring_Initializer.Repository.GradeRepo;
 import com.template.Spring_Initializer.Repository.StudentRepo;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
 import com.template.Spring_Initializer.Repository.TeacherRepo;
+
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GradeService {
@@ -22,7 +22,6 @@ public class GradeService {
     private final SubjectRepo subjectRepo;
     private final TeacherRepo teacherRepo;
 
-    
     public GradeService(
             GradeRepo gradeRepo,
             StudentRepo studentRepo,
@@ -35,36 +34,49 @@ public class GradeService {
         this.teacherRepo = teacherRepo;
     }
 
+    @Transactional
+    public GradeResponse addGrade(GradeRequest request) {
 
-    public Grade addGrade(GradeRequest request) {
-        Student student = studentRepo.findById(request.studentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
-
-        Subject subject = subjectRepo.findById(request.subjectId())
-                .orElseThrow(() -> new RuntimeException("Subject not found"));
-
-        Teacher teacher = teacherRepo.findById(request.teacherId())
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
-
-                
         Grade grade = new Grade();
         grade.setScore(request.score());
         grade.setGradeDate(request.gradeDate());
+        grade.setStudent(
+                studentRepo.findById(request.studentId()).orElseThrow(() -> new RuntimeException("Student not found")));
+        grade.setSubject(
+                subjectRepo.findById(request.subjectId()).orElseThrow(() -> new RuntimeException("Subject not found")));
+        grade.setTeacher(
+                teacherRepo.findById(request.teacherId()).orElseThrow(() -> new RuntimeException("Teacher not found")));
 
-        grade.setStudent(student);
-        grade.setSubject(subject);
-        grade.setTeacher(teacher);
         Grade savedGrade = gradeRepo.save(grade);
 
-        System.out.println("student: " + savedGrade.getStudent());
-        System.out.println("subject: " + savedGrade.getSubject());
-        System.out.println("teacher: " + savedGrade.getTeacher());
-
-        return savedGrade;
-
+        return toResponse(savedGrade);
 
     }
 
+    @Transactional(readOnly = true)
+    public List<GradeResponse> getAllGradeResponses() {
+        return gradeRepo.findAll().stream().map(this::toResponse).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public GradeResponse getGradeById(Long id) {
+
+        Grade grade = gradeRepo.findById(id).orElseThrow(() -> new RuntimeException("Grade not found"));
+
+        return toResponse(grade);
+
+    }
+
+    private GradeResponse toResponse(Grade grade) {
+
+        return new GradeResponse(
+                grade.getId(),
+                grade.getScore(),
+                grade.getGradeDate(),
+                grade.getStudent().getId(),
+                grade.getTeacher().getId(),
+                grade.getSubject().getId());
+    }
 
     public List<Grade> findAll() {
         return gradeRepo.findAll();

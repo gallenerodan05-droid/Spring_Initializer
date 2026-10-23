@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.template.Spring_Initializer.DTO.GradeRequest;
+import com.template.Spring_Initializer.DTO.GradeResponse;
 import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Service.GradeService;
 
@@ -29,13 +30,13 @@ public class GradeController {
     }
 
     @PostMapping
-    public Grade addGrade(@Valid  @RequestBody GradeRequest request) {
+    public GradeResponse addGrade(@Valid  @RequestBody GradeRequest request) {
         return gradeService.addGrade(request);
     }
 
     @GetMapping
-    public List<Grade> findAll() {
-        return gradeService.findAll();
+    public List<GradeResponse> findAll() {
+        return gradeService.getAllGradeResponses();
     }
 
     @GetMapping("/{id}")
