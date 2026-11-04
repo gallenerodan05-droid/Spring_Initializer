@@ -1,7 +1,8 @@
 package com.template.Spring_Initializer.Exception;
 
 
-import com.template.Spring_Initializer.DTO.ApiError;
+import java.util.List;
+
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
+import com.template.Spring_Initializer.DTO.ApiError;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,7 +25,18 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleResourceNotFoundException(ResourceNotFoundException ex) {
+    ApiError body = new ApiError(404, "Not Found", List.of(ex.getMessage()));
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
 
+   @ExceptionHandler(RuntimeException.class)
+public ResponseEntity<ApiError> handleRuntimeException(RuntimeException ex) {
+    ApiError body = new ApiError(500, "Internal Server Error", List.of(ex.getMessage()));
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    
+}
 
 
 }

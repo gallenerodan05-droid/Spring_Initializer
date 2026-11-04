@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.template.Spring_Initializer.DTO.GradeRequest;
 import com.template.Spring_Initializer.DTO.GradeResponse;
 import com.template.Spring_Initializer.Model.Grade;
+import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
 import com.template.Spring_Initializer.Repository.GradeRepo;
 import com.template.Spring_Initializer.Repository.StudentRepo;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
@@ -61,7 +62,7 @@ public class GradeService {
     @Transactional(readOnly = true)
     public GradeResponse getGradeById(Long id) {
 
-        Grade grade = gradeRepo.findById(id).orElseThrow(() -> new RuntimeException("Grade not found"));
+        Grade grade = gradeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Grade with ID " + id + " not found"));
 
         return toResponse(grade);
 
@@ -84,7 +85,7 @@ public class GradeService {
 
     public Grade findById(Long id) {
         return gradeRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("No grade found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Grade with ID " + id + " not found"));
     }
 
     public void deleteById(Long id) {
