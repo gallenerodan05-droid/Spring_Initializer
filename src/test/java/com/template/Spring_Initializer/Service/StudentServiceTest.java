@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
 import com.template.Spring_Initializer.Model.Student;
 import com.template.Spring_Initializer.Repository.StudentRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,11 +96,11 @@ class StudentServiceTest {
     }
 
     @Test
-    void getStudent_throwsRuntimeException_whenStudentDoesNotExist() {
+    void getStudent_throwsResourceNotFoundException_whenStudentDoesNotExist() {
         when(studentRepo.findById(99L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
                 () -> studentService.getStudent(99L)
         );
         assertEquals("Student not found", exception.getMessage());

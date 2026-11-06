@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
 import com.template.Spring_Initializer.Model.Teacher;
 import com.template.Spring_Initializer.Repository.TeacherRepo;
 
@@ -20,7 +21,7 @@ public class TeacherService {
     }
 
     public Teacher findById(Long aLong) {
-        return teacherRepo.findById(aLong).orElseThrow(()-> new RuntimeException("Teacher is not found") ) ;
+        return teacherRepo.findById(aLong).orElseThrow(()-> new ResourceNotFoundException("Teacher is not found") ) ;
     }
 
     public void deleteById(Long aLong) {

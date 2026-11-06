@@ -42,11 +42,11 @@ public class GradeService {
         grade.setScore(request.score());
         grade.setGradeDate(request.gradeDate());
         grade.setStudent(
-                studentRepo.findById(request.studentId()).orElseThrow(() -> new RuntimeException("Student not found")));
+                studentRepo.findById(request.studentId()).orElseThrow(() -> new ResourceNotFoundException("Student not found")));
         grade.setSubject(
-                subjectRepo.findById(request.subjectId()).orElseThrow(() -> new RuntimeException("Subject not found")));
+                subjectRepo.findById(request.subjectId()).orElseThrow(() -> new ResourceNotFoundException("Subject not found")));
         grade.setTeacher(
-                teacherRepo.findById(request.teacherId()).orElseThrow(() -> new RuntimeException("Teacher not found")));
+                teacherRepo.findById(request.teacherId()).orElseThrow(() -> new ResourceNotFoundException("Teacher not found")));
 
         Grade savedGrade = gradeRepo.save(grade);
 

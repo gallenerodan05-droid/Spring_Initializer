@@ -19,6 +19,7 @@ import com.template.Spring_Initializer.Repository.TeacherRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -102,11 +103,20 @@ class GradeServiceTest {
         verify(studentRepo).findById(1L);
         verify(subjectRepo).findById(2L);
         verify(teacherRepo).findById(3L);
-        verify(gradeRepo).save(any(Grade.class));
+
+        ArgumentCaptor<Grade> gradeCaptor = ArgumentCaptor.forClass(Grade.class);
+        verify(gradeRepo).save(gradeCaptor.capture());
+
+        Grade gradeToSave = gradeCaptor.getValue();
+        assertEquals(95.0, gradeToSave.getScore());
+        assertEquals(LocalDate.of(2026, 1, 15), gradeToSave.getGradeDate());
+        assertEquals(student, gradeToSave.getStudent());
+        assertEquals(subject, gradeToSave.getSubject());
+        assertEquals(teacher, gradeToSave.getTeacher());
     }
 
     @Test
-    void addGrade_throwsRuntimeException_whenStudentDoesNotExist() {
+    void addGrade_throwsResourceNotFoundException_whenStudentDoesNotExist() {
         GradeRequest request = new GradeRequest(
                 95.0,
                 LocalDate.of(2026, 1, 15),
@@ -117,7 +127,10 @@ class GradeServiceTest {
 
         when(studentRepo.findById(1L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> gradeService.addGrade(request));
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> gradeService.addGrade(request)
+        );
         assertEquals("Student not found", exception.getMessage());
 
         verify(studentRepo).findById(1L);
@@ -127,7 +140,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void addGrade_throwsRuntimeException_whenSubjectDoesNotExist() {
+    void addGrade_throwsResourceNotFoundException_whenSubjectDoesNotExist() {
         GradeRequest request = new GradeRequest(
                 95.0,
                 LocalDate.of(2026, 1, 15),
@@ -139,7 +152,10 @@ class GradeServiceTest {
         when(studentRepo.findById(1L)).thenReturn(Optional.of(student));
         when(subjectRepo.findById(2L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> gradeService.addGrade(request));
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> gradeService.addGrade(request)
+        );
         assertEquals("Subject not found", exception.getMessage());
 
         verify(studentRepo).findById(1L);
@@ -149,7 +165,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void addGrade_throwsRuntimeException_whenTeacherDoesNotExist() {
+    void addGrade_throwsResourceNotFoundException_whenTeacherDoesNotExist() {
         GradeRequest request = new GradeRequest(
                 95.0,
                 LocalDate.of(2026, 1, 15),
@@ -162,7 +178,10 @@ class GradeServiceTest {
         when(subjectRepo.findById(2L)).thenReturn(Optional.of(subject));
         when(teacherRepo.findById(3L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> gradeService.addGrade(request));
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
+                () -> gradeService.addGrade(request)
+        );
         assertEquals("Teacher not found", exception.getMessage());
 
         verify(studentRepo).findById(1L);

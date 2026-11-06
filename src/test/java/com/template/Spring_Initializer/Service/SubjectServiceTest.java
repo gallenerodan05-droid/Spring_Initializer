@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
 import com.template.Spring_Initializer.Model.Subject;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,11 +93,11 @@ class SubjectServiceTest {
     }
 
     @Test
-    void getSubject_throwsRuntimeException_whenSubjectDoesNotExist() {
+    void getSubject_throwsResourceNotFoundException_whenSubjectDoesNotExist() {
         when(subjectRepo.findById(99L)).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        ResourceNotFoundException exception = assertThrows(
+                ResourceNotFoundException.class,
                 () -> subjectService.getSubject(99L)
         );
         assertEquals("Subject is not found", exception.getMessage());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
 import com.template.Spring_Initializer.Model.Subject;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
 
@@ -27,7 +28,7 @@ public class SubjectService {
 
 
     public  Subject getSubject(Long id ){
-      return   subjectRepo.findById(id).orElseThrow( ()-> new RuntimeException("Subject is not found") );
+      return   subjectRepo.findById(id).orElseThrow( ()-> new ResourceNotFoundException("Subject is not found") );
     }
 
 
