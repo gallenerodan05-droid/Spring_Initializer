@@ -3,17 +3,17 @@ package com.template.Spring_Initializer.Service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.template.Spring_Initializer.DTO.GradeRequest;
 import com.template.Spring_Initializer.DTO.GradeResponse;
-import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
+import com.template.Spring_Initializer.Mapper.GradeMapper;
+import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Repository.GradeRepo;
 import com.template.Spring_Initializer.Repository.StudentRepo;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
 import com.template.Spring_Initializer.Repository.TeacherRepo;
-
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GradeService {
@@ -22,25 +22,26 @@ public class GradeService {
     private final StudentRepo studentRepo;
     private final SubjectRepo subjectRepo;
     private final TeacherRepo teacherRepo;
+    private final GradeMapper gradeMapper;
 
     public GradeService(
             GradeRepo gradeRepo,
             StudentRepo studentRepo,
             SubjectRepo subjectRepo,
-            TeacherRepo teacherRepo) {
+            TeacherRepo teacherRepo,
+            GradeMapper gradeMapper) {
 
         this.gradeRepo = gradeRepo;
         this.studentRepo = studentRepo;
         this.subjectRepo = subjectRepo;
         this.teacherRepo = teacherRepo;
+        this.gradeMapper = gradeMapper;
     }
 
     @Transactional
     public GradeResponse addGrade(GradeRequest request) {
 
-        Grade grade = new Grade();
-        grade.setScore(request.score());
-        grade.setGradeDate(request.gradeDate());
+        Grade grade = gradeMapper.toEntity(request);
         grade.setStudent(
                 studentRepo.findById(request.studentId()).orElseThrow(() -> new ResourceNotFoundException("Student not found")));
         grade.setSubject(
@@ -50,13 +51,13 @@ public class GradeService {
 
         Grade savedGrade = gradeRepo.save(grade);
 
-        return toResponse(savedGrade);
+        return gradeMapper.toResponse(savedGrade);
 
     }
 
     @Transactional(readOnly = true)
     public List<GradeResponse> getAllGradeResponses() {
-        return gradeRepo.findAll().stream().map(this::toResponse).toList();
+        return gradeMapper.toResponseList(gradeRepo.findAll());
     }
 
     @Transactional(readOnly = true)
@@ -64,19 +65,8 @@ public class GradeService {
 
         Grade grade = gradeRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Grade with ID " + id + " not found"));
 
-        return toResponse(grade);
+        return gradeMapper.toResponse(grade);
 
-    }
-
-    private GradeResponse toResponse(Grade grade) {
-
-        return new GradeResponse(
-                grade.getId(),
-                grade.getScore(),
-                grade.getGradeDate(),
-                grade.getStudent().getId(),
-                grade.getTeacher().getId(),
-                grade.getSubject().getId());
     }
 
     public List<Grade> findAll() {

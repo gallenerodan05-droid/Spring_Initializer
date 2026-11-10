@@ -5,9 +5,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mapstruct.factory.Mappers;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import com.template.Spring_Initializer.DTO.GradeRequest;
 import com.template.Spring_Initializer.DTO.GradeResponse;
 import com.template.Spring_Initializer.Exception.ResourceNotFoundException;
+import com.template.Spring_Initializer.Mapper.GradeMapper;
 import com.template.Spring_Initializer.Model.Grade;
 import com.template.Spring_Initializer.Model.Student;
 import com.template.Spring_Initializer.Model.Subject;
@@ -16,23 +36,6 @@ import com.template.Spring_Initializer.Repository.GradeRepo;
 import com.template.Spring_Initializer.Repository.StudentRepo;
 import com.template.Spring_Initializer.Repository.SubjectRepo;
 import com.template.Spring_Initializer.Repository.TeacherRepo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GradeServiceTest {
@@ -48,6 +51,9 @@ class GradeServiceTest {
 
     @Mock
     private TeacherRepo teacherRepo;
+
+    @Spy
+    private GradeMapper gradeMapper = Mappers.getMapper(GradeMapper.class);
 
     @InjectMocks
     private GradeService gradeService;
