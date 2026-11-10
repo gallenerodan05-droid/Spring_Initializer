@@ -2,6 +2,8 @@ package com.template.Spring_Initializer.Model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class Student {
     @Column(nullable= false)
     private String lastname;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "student")
     private List<Grade> grades;
 

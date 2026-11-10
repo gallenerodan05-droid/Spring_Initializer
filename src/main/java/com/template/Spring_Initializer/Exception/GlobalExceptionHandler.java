@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.template.Spring_Initializer.DTO.ApiError;
 
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.template.Spring_Initializer.Controller")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class )
